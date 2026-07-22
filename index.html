@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>US Paycheck Calculator 2024 – Federal & State Taxes | Tabutility</title>
+  <title>US Paycheck Calculator 2026 – Federal & State Taxes | Tabutility</title>
   <meta name="description" content="Free US paycheck calculator for 2024. Calculate your take-home pay after federal tax, state tax, Social Security, Medicare, and 401(k). All 50 states supported." />
   <meta name="keywords" content="US paycheck calculator, take home pay, federal tax calculator, state income tax, FICA calculator, 401k, net salary USA" />
   <link rel="canonical" href="https://us-paycheck-calculator.tabutility.com/" />
@@ -46,37 +46,40 @@
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
   <script type="text/babel" data-type="module">
+    //<![CDATA[
     // ── paste USPaycheckCalculator.jsx component here ──
     const { useState, useCallback } = React;
 
-    const FEDERAL_BRACKETS_2024 = {
+    // Source: IRS Revenue Procedure 2025-32 — Tax Year 2026 (One Big Beautiful Bill)
+    const FEDERAL_BRACKETS_2026 = {
       single: [
-        { min: 0, max: 11600, rate: 0.10 },{ min: 11600, max: 47150, rate: 0.12 },
-        { min: 47150, max: 100525, rate: 0.22 },{ min: 100525, max: 191950, rate: 0.24 },
-        { min: 191950, max: 243725, rate: 0.32 },{ min: 243725, max: 609350, rate: 0.35 },
-        { min: 609350, max: Infinity, rate: 0.37 },
+        { min: 0,       max: 12400,  rate: 0.10 },{ min: 12400,  max: 50400,  rate: 0.12 },
+        { min: 50400,   max: 105700, rate: 0.22 },{ min: 105700, max: 201775, rate: 0.24 },
+        { min: 201775,  max: 256225, rate: 0.32 },{ min: 256225, max: 640600, rate: 0.35 },
+        { min: 640600,  max: Infinity, rate: 0.37 },
       ],
       married: [
-        { min: 0, max: 23200, rate: 0.10 },{ min: 23200, max: 94300, rate: 0.12 },
-        { min: 94300, max: 201050, rate: 0.22 },{ min: 201050, max: 383900, rate: 0.24 },
-        { min: 383900, max: 487450, rate: 0.32 },{ min: 487450, max: 731200, rate: 0.35 },
-        { min: 731200, max: Infinity, rate: 0.37 },
+        { min: 0,       max: 24800,  rate: 0.10 },{ min: 24800,  max: 100800, rate: 0.12 },
+        { min: 100800,  max: 211400, rate: 0.22 },{ min: 211400, max: 403550, rate: 0.24 },
+        { min: 403550,  max: 512450, rate: 0.32 },{ min: 512450, max: 768700, rate: 0.35 },
+        { min: 768700,  max: Infinity, rate: 0.37 },
       ],
       married_separate: [
-        { min: 0, max: 11600, rate: 0.10 },{ min: 11600, max: 47150, rate: 0.12 },
-        { min: 47150, max: 100525, rate: 0.22 },{ min: 100525, max: 191950, rate: 0.24 },
-        { min: 191950, max: 243725, rate: 0.32 },{ min: 243725, max: 365600, rate: 0.35 },
-        { min: 365600, max: Infinity, rate: 0.37 },
+        { min: 0,       max: 12400,  rate: 0.10 },{ min: 12400,  max: 50400,  rate: 0.12 },
+        { min: 50400,   max: 105700, rate: 0.22 },{ min: 105700, max: 201775, rate: 0.24 },
+        { min: 201775,  max: 256225, rate: 0.32 },{ min: 256225, max: 384350, rate: 0.35 },
+        { min: 384350,  max: Infinity, rate: 0.37 },
       ],
       head: [
-        { min: 0, max: 16550, rate: 0.10 },{ min: 16550, max: 63100, rate: 0.12 },
-        { min: 63100, max: 100500, rate: 0.22 },{ min: 100500, max: 191950, rate: 0.24 },
-        { min: 191950, max: 243700, rate: 0.32 },{ min: 243700, max: 609350, rate: 0.35 },
-        { min: 609350, max: Infinity, rate: 0.37 },
+        { min: 0,       max: 17700,  rate: 0.10 },{ min: 17700,  max: 67450,  rate: 0.12 },
+        { min: 67450,   max: 105700, rate: 0.22 },{ min: 105700, max: 201775, rate: 0.24 },
+        { min: 201775,  max: 256225, rate: 0.32 },{ min: 256225, max: 640600, rate: 0.35 },
+        { min: 640600,  max: Infinity, rate: 0.37 },
       ],
     };
 
-    const STANDARD_DEDUCTIONS = { single: 14600, married: 29200, married_separate: 14600, head: 21900 };
+    // Standard deductions 2026: Single $16,100 | MFJ $32,200 | MFS $16,100 | HoH $24,150
+    const STANDARD_DEDUCTIONS = { single: 16100, married: 32200, married_separate: 16100, head: 24150 };
 
     const STATE_TAXES = {
       AL:{name:"Alabama",rate:0.05},AK:{name:"Alaska",rate:0,noTax:true},AZ:{name:"Arizona",rate:0.025},AR:{name:"Arkansas",rate:0.044},
@@ -97,7 +100,7 @@
     const PAY_PERIODS = { annual:1, monthly:12, biweekly:26, weekly:52 };
 
     function calcFederalTax(taxableIncome, filingStatus) {
-      const brackets = FEDERAL_BRACKETS_2024[filingStatus];
+      const brackets = FEDERAL_BRACKETS_2026[filingStatus];
       let tax = 0;
       for (const b of brackets) {
         if (taxableIncome <= b.min) break;
@@ -123,12 +126,12 @@
         const retirePct = (parseFloat(retirement401k) || 0) / 100;
         const extraW = parseFloat(additionalWithholding) || 0;
         const periods = PAY_PERIODS[payFreq];
-        const retirement401kAmt = Math.min(grossAnnual * retirePct, 23000);
+        const retirement401kAmt = Math.min(grossAnnual * retirePct, 24500); // 2026 401k limit
         const adjustedGross = grossAnnual - retirement401kAmt;
         const standardDeduction = STANDARD_DEDUCTIONS[filingStatus];
         const taxableIncome = Math.max(0, adjustedGross - standardDeduction);
         const federalTax = calcFederalTax(taxableIncome, filingStatus);
-        const ssTaxableWage = Math.min(grossAnnual, 168600);
+        const ssTaxableWage = Math.min(grossAnnual, 184500); // 2026 SS wage base
         const socialSecurity = ssTaxableWage * 0.062;
         const medicare = grossAnnual * 0.0145 + Math.max(0, grossAnnual - 200000) * 0.009;
         const stateData = STATE_TAXES[state];
@@ -152,7 +155,7 @@
             <div style={{textAlign:"center",marginBottom:32}}>
               <div style={{fontSize:48,marginBottom:8}}>🇺🇸</div>
               <h1 style={{margin:0,fontSize:32,fontWeight:800,color:"#1a1a2e"}}>US Paycheck Calculator</h1>
-              <p style={{margin:"8px 0 0",color:"#555",fontSize:16}}>Federal + State taxes, FICA, and 401(k) — 2024 tax year</p>
+              <p style={{margin:"8px 0 0",color:"#555",fontSize:16}}>Federal + State taxes, FICA, and 401(k) — 2026 tax year</p>
             </div>
             <div style={{background:"#fff",borderRadius:16,padding:28,boxShadow:"0 4px 24px rgba(0,0,0,0.08)",marginBottom:24}}>
               <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(220px, 1fr))",gap:20}}>
@@ -218,12 +221,12 @@
             </>}
 
             <div style={{background:"#fff",borderRadius:16,padding:24,boxShadow:"0 2px 12px rgba(0,0,0,0.06)",marginTop:24}}>
-              <h3 style={{margin:"0 0 16px",fontSize:16,fontWeight:700,color:"#1a1a2e"}}>📊 2024 Federal Tax Brackets</h3>
+              <h3 style={{margin:"0 0 16px",fontSize:16,fontWeight:700,color:"#1a1a2e"}}>📊 2026 Federal Tax Brackets (One Big Beautiful Bill)</h3>
               <div style={{overflowX:"auto"}}>
                 <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
                   <thead><tr style={{background:"#f1f3f5"}}>{["Rate","Single","Married Filing Jointly"].map(h=><th key={h} style={{padding:"10px 14px",textAlign:"left",fontWeight:700,color:"#333"}}>{h}</th>)}</tr></thead>
                   <tbody>
-                    {[["10%","Up to $11,600","Up to $23,200"],["12%","$11,601 – $47,150","$23,201 – $94,300"],["22%","$47,151 – $100,525","$94,301 – $201,050"],["24%","$100,526 – $191,950","$201,051 – $383,900"],["32%","$191,951 – $243,725","$383,901 – $487,450"],["35%","$243,726 – $609,350","$487,451 – $731,200"],["37%","Over $609,350","Over $731,200"]].map((row,i)=>(
+                    {[["10%","Up to $12,400","Up to $24,800"],["12%","$12,401 – $50,400","$24,801 – $100,800"],["22%","$50,401 – $105,700","$100,801 – $211,400"],["24%","$105,701 – $201,775","$211,401 – $403,550"],["32%","$201,776 – $256,225","$403,551 – $512,450"],["35%","$256,226 – $640,600","$512,451 – $768,700"],["37%","Over $640,600","Over $768,700"]].map((row,i)=>(
                       <tr key={i} style={{borderBottom:"1px solid #f1f3f5",background:i%2===0?"#fff":"#fafafa"}}>
                         {row.map((cell,j)=><td key={j} style={{padding:"10px 14px",color:j===0?"#3b5bdb":"#333",fontWeight:j===0?700:400}}>{cell}</td>)}
                       </tr>
@@ -239,6 +242,7 @@
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
+    //]]>
   </script>
 </body>
 </html>
