@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://us-paycheck-calculator.tabutility.com/sitemap.xml
